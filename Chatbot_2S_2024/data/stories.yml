@@ -1,0 +1,38 @@
+version: "3.1"
+
+stories:
+
+- story: Pedido de Pizza
+  steps:
+  - intent: saudacao
+  - action: utter_saudacao
+  - intent: pedido_comida
+  - action: utter_pedido_comida
+  - intent: descricao_item
+    entities:
+    - sabor: mussarela
+  - slot_was_set:
+    - pedido_pizza: mussarela
+  - action: utter_descricao_item
+  - intent: afirmacao 
+  - action: utter_solicita_endereco
+  - intent: info_endereco
+  - slot_was_set:
+    - endereco_cliente: Rua Jurubatura, 101, Centro, SBC
+  - action: utter_info_endereco  
+  - intent: afirmacao
+  - action: utter_finalizacao_pedido
+
+- story: Status do Pedido
+  steps:
+  - intent: status
+  - action: utter_status
+  - intent: id_pedido
+    entities:
+    - num_pedido: '98745'
+  - slot_was_set:
+    - num_pedido_cliente: '98745'
+  - action: utter_id_pedido
+
+
+  
