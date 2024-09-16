@@ -1,0 +1,70 @@
+version: "3.1"
+
+stories:
+
+- story: Inicio da Conversa
+  steps:
+  - intent: saudacao
+  - action: utter_saudacao
+  - intent: pedido_comida
+  - checkpoint: fim_saudacao
+
+- story: Descrição do pedido de pizza
+  steps:
+  - checkpoint: fim_saudacao
+  - action: utter_pedido_comida
+  - intent: descricao_item
+    entities:
+    - sabor: mussarela
+  - slot_was_set:
+    - pedido_pizza: mussarela
+  - action: utter_descricao_item
+  - checkpoint: checar_pedido_pizza
+
+- story: Pedido Correto
+  steps:
+  - checkpoint: checar_pedido_pizza
+  - intent: afirmacao
+  - checkpoint: solicita_endereco 
+
+- story: Pedido Incorreto
+  steps:
+  - checkpoint: checar_pedido_pizza
+  - intent: negacao
+  - checkpoint: fim_saudacao
+
+- story: Solicitacao de endereco
+  steps:
+  - checkpoint: solicita_endereco
+  - action: utter_solicita_endereco
+  - intent: info_endereco
+  - slot_was_set:
+    - endereco_cliente: Rua Jurubatura, 101, Centro, SBC
+  - action: utter_info_endereco
+  - checkpoint: checar_endereco
+
+- story: Endereco correto
+  steps:
+  - checkpoint: checar_endereco
+  - intent: afirmacao
+  - action: utter_finalizacao_pedido
+
+- story: Endereco errado
+  steps:
+  - checkpoint: checar_endereco
+  - intent: negacao
+  - checkpoint: solicita_endereco
+
+- story: Status do Pedido
+  steps:
+  - intent: status
+  - action: utter_status
+  - intent: id_pedido
+    entities:
+    - num_pedido: '98745'
+  - slot_was_set:
+    - num_pedido_cliente: '98745'
+  - action: utter_id_pedido
+
+
+  
